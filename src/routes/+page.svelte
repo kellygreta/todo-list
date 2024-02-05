@@ -1,23 +1,29 @@
-<div class="flex flex-col justify-center p-4">
+<script>
+    import TodoForm from './components/TodoForm.svelte';
+    import Todo from './components/Todo.svelte';
+    import { browser } from '$app/environment';
+
+    function getTodos() {
+		let todos = browser ? window.localStorage.getItem('todos') : null;
+
+		if (todos === null) {
+			todos = [];
+		} else {
+			todos = JSON.parse(todos);
+		}
+
+		return todos;
+	}
+
+    let todos = getTodos();
+
+</script>
+<div class="flex flex-col items-center justify-center p-4">
     <h2 class="text-3xl bg-slate-300"> TO DO list </h2>
-    <!-- TODO form component -->
-    <div class="flex-col flex">
-        <p >Enter your todo here:</p>
-        <div class="flex">
-            <div >
-                <input class=" border-2 border-blue-500 rounded-md" type="text">
-                 <!-- TODO button component -->
-                <button class="bg-blue-500 rounded-md">Enter</button>
-            </div>
-        </div>
-    </div>
-    <!-- TODO todo component -->
-    <div class="flex">
-        <input type="checkbox">
-        <h4>first todo</h4>
-        <div>
-            <button class="bg-blue-500 rounded-md">Edit</button>
-            <button class="bg-blue-500 rounded-md">Delete</button>
-        </div>
-    </div>
+    <TodoForm/>
+    {#each todos as todo}
+    <Todo
+        propTodo={todo}
+    />
+    {/each}
 </div>
